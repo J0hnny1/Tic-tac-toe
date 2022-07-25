@@ -1,14 +1,6 @@
-let myImage = document.querySelector('img');
 let currentPlayer = 1;
 let t1S, t2S, t3S, t4S, t5S, t6S, t7S, t8S, t9S = false;
 
-/*
-if (!localStorage.getItem('username')) {
-    getUsername();
-}
-
-
- */
 
 let items = [
     [0, 0, 0],
@@ -41,28 +33,6 @@ document.getElementById('startGame').onclick = function () {
     document.getElementById('playerWon').textContent = " "
 };
 
-// console.log(items[0][2]);
-//switch image
-
-//username button
-/*
-document.getElementById('button1').onclick = function () {
-    getUsername();
-};
-
- */
-
-// document.getElementById('a').textContent = 'Welcome ' + localStorage.getItem('username');
-
-document.getElementById('a').addEventListener('click', () => {
-    alert('Pogg Endlich')
-});
-
-function getUsername() {
-    let userName = prompt('Enter Username');
-    localStorage.setItem('username', userName);
-    window.location.reload();
-}
 
 //play field
 document.getElementById('t1').onclick = function () {
@@ -155,10 +125,16 @@ function checkWin(player) {
         (items[0][0] === player && items[1][1] === player && items[2][2] === player) ||
         (items[0][2] === player && items[1][1] === player && items[2][0] === player)) {
 
-        //alert('Player ' + player + ' Won')
         document.getElementById('playerWon').textContent = "Player " + player + " won!"
         t1S = t2S = t3S = t4S = t5S = t6S = t7S = t8S = t9S = true;
-    }else if (items[0][0], items[0][1],items[0][2],items[1][0],items[1][1],items[1][2],items[2][0],items[2][1],items[2][2] !== 0) {
+
+    } else if (
+        items[0][0] !== 0 && items[0][1] !== 0 &&
+        items[0][2] !== 0 && items[1][0] !== 0 &&
+        items[1][1] !== 0 && items[1][2] !== 0 &&
+        items[2][0] !== 0 && items[2][1] !== 0 &&
+        items[2][2] !== 0) {
+        
         document.getElementById('playerWon').textContent = "Tie"
     }
 }
