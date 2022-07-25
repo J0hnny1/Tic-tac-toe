@@ -20,9 +20,7 @@ p, li {
 }
 
 
-html {
-  background-color: #ffffff;
-}
+
 
 body {
   width: 600px;
@@ -36,7 +34,6 @@ h1 {
   margin: 0;
   padding: 20px 0;
   color: #00539F;
-  text-shadow: 3px 3px 1px black;
 }
 
 table, th, td {
@@ -62,4 +59,8 @@ button {
   width: 100px;
   margin-left: 250px;
   margin-top: 15px;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 16px;
 }
+

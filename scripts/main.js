@@ -94,9 +94,11 @@ document.getElementById('t9').onclick = function () {
 function play(id, x, y) {
     if (currentPlayer === 1) {
         document.getElementById(id).textContent = 'X';
+        document.getElementById(id).style.color = 'blue';
         items[x][y] = 1;
     } else {
         document.getElementById(id).textContent = 'O';
+        document.getElementById(id).style.color = 'red';
         items[x][y] = 2;
     }
 
@@ -109,12 +111,16 @@ function play(id, x, y) {
     else cpl = 'Current Player: 2 (O)';
     document.getElementById('playerOnTurn').textContent = cpl;
 
-    checkWin(1);
-    checkWin(2);
+    if (!(checkWin(1) || checkWin(2))) {
+        checkTie();
+    }
+
+
+
 }
 
 function checkWin(player) {
-    if ((items[0][0] === player & items[0][1] === player && items[0][2] === player) ||
+    if ((items[0][0] === player && items[0][1] === player && items[0][2] === player) ||
         (items[1][0] === player && items[1][1] === player && items[1][2] === player) ||
         (items[2][0] === player && items[2][1] === player && items[2][2] === player) ||
         //top down
@@ -126,15 +132,26 @@ function checkWin(player) {
         (items[0][2] === player && items[1][1] === player && items[2][0] === player)) {
 
         document.getElementById('playerWon').textContent = "Player " + player + " won!"
+        if (player === 1) document.getElementById('playerWon').style.color = 'blue';
+        else document.getElementById('playerWon').style.color = 'red';
         t1S = t2S = t3S = t4S = t5S = t6S = t7S = t8S = t9S = true;
 
-    } else if (
+        return true
+    }
+    return false
+}
+
+function checkTie() {
+    if (
         items[0][0] !== 0 && items[0][1] !== 0 &&
         items[0][2] !== 0 && items[1][0] !== 0 &&
         items[1][1] !== 0 && items[1][2] !== 0 &&
         items[2][0] !== 0 && items[2][1] !== 0 &&
         items[2][2] !== 0) {
-        
-        document.getElementById('playerWon').textContent = "Tie"
+
+
+            document.getElementById('playerWon').textContent = "Tie";
+
+
     }
 }
