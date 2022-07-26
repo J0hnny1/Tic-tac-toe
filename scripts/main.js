@@ -28,6 +28,8 @@ document.getElementById('startGame').onclick = function () {
     document.getElementById('t8').textContent = ' ';
     document.getElementById('t9').textContent = ' ';
 
+    setHovers("hover")
+
     t1S = t2S = t3S = t4S = t5S = t6S = t7S = t8S = t9S = false;
 
     document.getElementById('playerWon').textContent = " "
@@ -39,6 +41,7 @@ document.getElementById('t1').onclick = function () {
     if (!t1S) {
         play('t1', 0, 0);
         t1S = true;
+
     }
 };
 document.getElementById('t2').onclick = function () {
@@ -115,7 +118,7 @@ function play(id, x, y) {
         checkTie();
     }
 
-
+    document.getElementById(id).className = "noHover";
 
 }
 
@@ -136,6 +139,7 @@ function checkWin(player) {
         else document.getElementById('playerWon').style.color = 'red';
         t1S = t2S = t3S = t4S = t5S = t6S = t7S = t8S = t9S = true;
 
+        setHovers("noHover")
         return true
     }
     return false
@@ -150,8 +154,27 @@ function checkTie() {
         items[2][2] !== 0) {
 
 
-            document.getElementById('playerWon').textContent = "Tie";
+        document.getElementById('playerWon').textContent = "Tie";
+        document.getElementById('playerWon').style.color = ' ';
 
 
     }
 }
+
+function setHovers(cssClass) {
+    /*
+    CSS Classes:
+    noHover
+    hover
+     */
+    document.getElementById('t1').className = cssClass;
+    document.getElementById('t2').className = cssClass;
+    document.getElementById('t3').className = cssClass;
+    document.getElementById('t4').className = cssClass;
+    document.getElementById('t5').className = cssClass;
+    document.getElementById('t6').className = cssClass;
+    document.getElementById('t7').className = cssClass;
+    document.getElementById('t8').className = cssClass;
+    document.getElementById('t9').className = cssClass;
+}
+

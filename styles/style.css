@@ -51,6 +51,16 @@ th, td {
   user-select: none;
 }
 
+th:hover.hover, td:hover.hover{
+  background-color: rgba(211, 211, 211, 0.29);
+}
+
+th:hover.noHover, td:hover.noHover{
+  background-color: rgb(255, 255, 255);
+}
+
+
+
 button {
   border-radius: 12px;
   color: white;
