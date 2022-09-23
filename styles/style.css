@@ -12,13 +12,26 @@ h1 {
 h2{
   text-align: center;
 }
+input{
 
+  margin-left: 250px;
+
+  margin-top: 15px;
+  padding: 10px;
+  font-size: 16px;
+}
 p, li {
   font-size: 16px;
   line-height: 2;
   letter-spacing: 1px;
 }
-
+#rectangle{
+  width:618px;
+  height:618px;
+  background:blue;
+  position:relative;
+  z-index: 9;
+}
 
 
 
@@ -42,6 +55,10 @@ table, th, td {
   height: 200px;
   border-collapse: collapse;
   table-layout: fixed;
+  fill: gray;
+
+  position:relative;
+  z-index: 9;
 }
 
 th, td {

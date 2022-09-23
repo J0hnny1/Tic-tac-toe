@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Tic-tac-toe</title>
-  <link href="styles/style.css" rel="stylesheet" type="text/css">
+    <meta charset="utf-8">
+    <title>Tic-tac-toe</title>
+    <link href="styles/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <h1 id="a">Tic-tac-toe</h1>
@@ -11,35 +11,42 @@
 <br>
 <br>
 
- <button id="startGame"> Start New Game </button>
+<button id="startGame"> Start New Game</button>
+<button id="getID"> Get Player ID</button>
+<button id="startMultGame"> Start</button>
+<input id="destPlayerID" type="text" placeholder="Connect to Player ID">
+
+<h2 id="peerID"></h2>
+
 <br>
 <br>
- <h2 id="playerOnTurn">  Current Player: 1 (X)</h2>
+<h2 id="playerOnTurn"> Current Player: 1 (X)</h2>
 
 
-
-
- <table>
-   <tr>
-     <th class="hover" id="t1"> </th>
-     <th class="hover" id="t2" ></th>
-     <th class="hover" id="t3"></th>
-   </tr>
-   <tr>
-     <td class="hover" id="t4"></td>
-     <td class="hover" id="t5"></td>
-     <td class="hover" id="t6"></td>
-   </tr>
-   <tr>
-     <td class="hover" id="t7"></td>
-     <td class="hover" id="t8"></td>
-     <td class="hover" id="t9"></td>
-   </tr>
- </table>
+<table>
+    <tr>
+        <th class="hover" id="t1"></th>
+        <th class="hover" id="t2"></th>
+        <th class="hover" id="t3"></th>
+    </tr>
+    <tr>
+        <td class="hover" id="t4"></td>
+        <td class="hover" id="t5"></td>
+        <td class="hover" id="t6"></td>
+    </tr>
+    <tr>
+        <td class="hover" id="t7"></td>
+        <td class="hover" id="t8"></td>
+        <td class="hover" id="t9"></td>
+    </tr>
+</table>
 
 <h1 id="playerWon"></h1>
 
- <script src="scripts/main.js"></script>
+<button id="testSend">testSend</button>
+<script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
+<script src="scripts/main.js"></script>
+
 
 </body>
 </html>
