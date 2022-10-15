@@ -1,21 +1,27 @@
 let currentPlayer = 1;
 let t1S, t2S, t3S, t4S, t5S, t6S, t7S, t8S, t9S = false;
+let multiplayer = false;
 
-
-let items = [
-    [0, 0, 0],
-    [0, 0, 0],
-    [0, 0, 0]
-];
-
+//let items = [
+//    [0, 0, 0],
+//    [0, 0, 0],
+//    [0, 0, 0]
+//];
+const playField = {t1: "0", t2: "0", t3: "0", t4: "0", t5: "0", t6: "0", t7: "0", t8: "0", t9: "0"};
 //start game | clear screen
 document.getElementById('startGame').onclick = function () {
     console.log('Clear pressed');
-    items = [
-        [0, 0, 0],
-        [0, 0, 0],
-        [0, 0, 0]
-    ];
+    for (let i = 1; i < 9; i++) {
+        let c = "t" + i
+        playField[c] = 0;
+    }
+    //items = [
+    //    [0, 0, 0],
+    //    [0, 0, 0],
+    //    [0, 0, 0]
+    //];
+
+
     currentPlayer = 1;
     document.getElementById('playerOnTurn').textContent = 'Current Player: 1 (X)';
     document.getElementById('t1').textContent = ' ';
@@ -39,56 +45,55 @@ document.getElementById('startGame').onclick = function () {
 //play field
 document.getElementById('t1').onclick = function () {
     if (!t1S) {
-        play(0, 0);
+        play("t1");
         t1S = true;
-
     }
 };
 document.getElementById('t2').onclick = function () {
     if (!t2S) {
-        play(0, 1);
+        play("t2");
         t2S = true;
     }
 };
 document.getElementById('t3').onclick = function () {
     if (!t3S) {
-        play(0, 2);
+        play("t3");
         t3S = true;
     }
 };
 document.getElementById('t4').onclick = function () {
     if (!t4S) {
-        play(1, 0);
+        play("t4");
         t4S = true;
     }
 };
 document.getElementById('t5').onclick = function () {
     if (!t5S) {
-        play(1, 1);
+        play("t5");
         t5S = true;
     }
 };
 document.getElementById('t6').onclick = function () {
     if (!t6S) {
-        play(1, 2);
+        play("t6");
         t6S = true;
     }
 };
 document.getElementById('t7').onclick = function () {
     if (!t7S) {
-        play(2, 0);
+        play("t7");
         t7S = true;
     }
 };
 document.getElementById('t8').onclick = function () {
     if (!t8S) {
-        play(2, 1);
+        play("t8");
         t8S = true;
     }
 };
 document.getElementById('t9').onclick = function () {
     if (!t9S) {
-        play(2, 2);
+        play("t9");
         t9S = true;
     }
 };
@@ -97,6 +102,9 @@ let peer
 let conn
 
 function createPeerJS() {
+
+    multiplayer = true;
+
     peer = new Peer();
     peer.on('open', function (id) {
         console.log('My peer ID is: ' + id);
@@ -142,65 +150,79 @@ document.getElementById("testSend").onclick = function () {
     conn.send("Test Message");
 };
 
-let fieldID;
+//let fieldID;
 
-function play(x, y) {
+function play(t) {
+    if (t) {
+        //fieldID = t
 
-    if (x === 0 && y === 0) {
-        fieldID = "t1";
-    } else if (x === 0 && y === 1) {
-        fieldID = "t2";
-    } else if (x === 0 && y === 2) {
-        fieldID = "t3";
-    } else if (x === 1 && y === 0) {
-        fieldID = "t4";
-    } else if (x === 1 && y === 1) {
-        fieldID = "t5";
-    } else if (x === 1 && y === 2) {
-        fieldID = "t6";
-    } else if (x === 2 && y === 0) {
-        fieldID = "t7";
-    } else if (x === 2 && y === 1) {
-        fieldID = "t8";
-    } else if (x === 2 && y === 2) {
-        fieldID = "t9";
+        //if field is given:
+        //write to field object depending on player
+        if (currentPlayer === 1) {
+            playField[t] = "X"
+            document.getElementById(t).textContent = 'X';
+            document.getElementById(t).style.color = 'blue';
+        } else if (currentPlayer === 2) {
+            playField[t] = "O"
+            document.getElementById(t).textContent = 'O';
+            document.getElementById(t).style.color = 'red';
+        }
     }
-    console.log("ID: " + fieldID);
-    if (currentPlayer === 1) {
-        document.getElementById(fieldID).textContent = 'X';
-        document.getElementById(fieldID).style.color = 'blue';
-        if (items[x][y] === 0){
-            items[x][y] = 1;
-        }
+    if (!t) {
 
-    } else {
-        document.getElementById(fieldID).textContent = 'O';
-        document.getElementById(fieldID).style.color = 'red';
-        if (items[x][y] === 0){
-            items[x][y] = 2;
+        for (let i = 1; i < 9; i++) {
+            let c = "t" + i
+            if (playField[c] === "X") {
+                document.getElementById(t).textContent = 'X';
+                document.getElementById(t).style.color = 'blue';
+            } else if (playField[c] === "O") {
+                document.getElementById(t).textContent = 'O';
+                document.getElementById(t).style.color = 'red';
+            }
         }
-
     }
 
+    //console.log("ID: " + fieldID);
+    //if (currentPlayer === 1) {
+    //    document.getElementById(fieldID).textContent = 'X';
+    //    document.getElementById(fieldID).style.color = 'blue';
+    //    if (items[x][y] === 0) {
+    //        items[x][y] = 1;
+    //    }
+//
+    //} else {
+    //    document.getElementById(fieldID).textContent = 'O';
+    //    document.getElementById(fieldID).style.color = 'red';
+    //    if (items[x][y] === 0) {
+    //        items[x][y] = 2;
+    //    }
+//
+    //}
+//
+    //change player
     if (currentPlayer === 2) {
         currentPlayer = 1;
     } else currentPlayer = 2;
 
+    //update current player shown
     let cpl
     if (currentPlayer === 1) cpl = 'Current Player: 1 (X)'
     else cpl = 'Current Player: 2 (O)';
     document.getElementById('playerOnTurn').textContent = cpl;
 
-    if (!(checkWin(1) || checkWin(2))) {
+    if (!(checkWin("X") || checkWin("O"))) {
         checkTie();
     }
 
-    document.getElementById(fieldID).className = "noHover";
-    sendState();
+    document.getElementById(t).className = "noHover";
+    //send state for multiplayer
+    if (multiplayer) {
+        sendState();
+    }
 }
 
 function sendState() {
-    const gameState = {items: items, currentPlayer: currentPlayer};
+    const gameState = {playField: playField, currentPlayer: currentPlayer};
 
     conn.send(gameState);
     //conn.send(items);
@@ -213,61 +235,26 @@ function receivedState(data) {
     //    console.log("isArray")
     //    arrayToPlayField();
     //}
-    items = data.items;
+    //items = data.items;
+
     console.log("Rec items: ")
-    console.log(data.items);
+    //console.log(data.items);
     currentPlayer = data.currentPlayer;
 
-    console.log("Items: " + items);
-    arrayToPlayField();
-}
-
-function arrayToPlayField() {
-    console.log("arrayToFIeld");
-    switch (items) {
-        case items[0][0]:
-            play(0, 0)
-            t1S = true;
-            break;
-        case items[0][1]:
-            play(0, 1);
-            break;
-        case items[0][2]:
-            play(0, 2);
-            break;
-        case items[1][0]:
-            play(1, 0);
-            break;
-        case items[2][0]:
-            play(2, 0);
-            break;
-        case items[1][1]:
-            play(1, 1);
-            break;
-        case items[2][2]:
-            play(2, 2);
-            break;
-        case items[2][1]:
-            play(2, 1);
-            break;
-        case items[1][2]:
-            play(1, 2);
-            break;
-    }
 
 }
 
 function checkWin(player) {
-    if ((items[0][0] === player && items[0][1] === player && items[0][2] === player) ||
-        (items[1][0] === player && items[1][1] === player && items[1][2] === player) ||
-        (items[2][0] === player && items[2][1] === player && items[2][2] === player) ||
+    if ((playField.t1 === player && playField.t2 === player && playField.t3 === player) ||
+        (playField.t4 === player && playField.t5 === player && playField.t6 === player) ||
+        (playField.t7 === player && playField.t8 === player && playField.t9 === player) ||
         //top down
-        (items[0][0] === player && items[1][0] === player && items[2][0] === player) ||
-        (items[0][1] === player && items[1][1] === player && items[2][1] === player) ||
-        (items[0][2] === player && items[1][2] === player && items[2][2] === player) ||
+        (playField.t1 === player && playField.t4 === player && playField.t7 === player) ||
+        (playField.t2 === player && playField.t5 === player && playField.t8 === player) ||
+        (playField.t3 === player && playField.t6 === player && playField.t9 === player) ||
         //diagonal
-        (items[0][0] === player && items[1][1] === player && items[2][2] === player) ||
-        (items[0][2] === player && items[1][1] === player && items[2][0] === player)) {
+        (playField.t1 === player && playField.t5 === player && playField.t9 === player) ||
+        (playField.t3 === player && playField.t5 === player && playField.t7 === player)) {
 
         document.getElementById('playerWon').textContent = "Player " + player + " won!"
         if (player === 1) document.getElementById('playerWon').style.color = 'blue';
@@ -282,11 +269,11 @@ function checkWin(player) {
 
 function checkTie() {
     if (
-        items[0][0] !== 0 && items[0][1] !== 0 &&
-        items[0][2] !== 0 && items[1][0] !== 0 &&
-        items[1][1] !== 0 && items[1][2] !== 0 &&
-        items[2][0] !== 0 && items[2][1] !== 0 &&
-        items[2][2] !== 0) {
+        playField.t1 !== 0 && playField.t2 !== 0 &&
+        playField.t7 !== 0 && playField.t4 !== 0 &&
+        playField.t5 !== 0 && playField.t6 !== 0 &&
+        playField.t7 !== 0 && playField.t8 !== 0 &&
+        playField.t9 !== 0) {
 
 
         document.getElementById('playerWon').textContent = "Tie";
