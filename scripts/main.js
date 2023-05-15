@@ -1,42 +1,23 @@
-let currentPlayer = 1;
-let t1S, t2S, t3S, t4S, t5S, t6S, t7S, t8S, t9S = false;
+let currentPlayer = 'X';
 let multiplayer = false;
+let multiplayerPlayer
 
-//let items = [
-//    [0, 0, 0],
-//    [0, 0, 0],
-//    [0, 0, 0]
-//];
 const playField = {t1: "0", t2: "0", t3: "0", t4: "0", t5: "0", t6: "0", t7: "0", t8: "0", t9: "0"};
+let fieldSet = {t1: false, t2: false, t3: false, t4: false, t5: false, t6: false, t7: false, t8: false, t9: false};
 //start game | clear screen
 document.getElementById('startGame').onclick = function () {
     console.log('Clear pressed');
-    for (let i = 1; i < 9; i++) {
+    for (let i = 1; i < 10; i++) {
         let c = "t" + i
         playField[c] = 0;
+        fieldSet[c] = false
+        document.getElementById(c).textContent = ' ';
     }
-    //items = [
-    //    [0, 0, 0],
-    //    [0, 0, 0],
-    //    [0, 0, 0]
-    //];
 
 
-    currentPlayer = 1;
+    currentPlayer = 'X';
     document.getElementById('playerOnTurn').textContent = 'Current Player: 1 (X)';
-    document.getElementById('t1').textContent = ' ';
-    document.getElementById('t2').textContent = ' ';
-    document.getElementById('t3').textContent = ' ';
-    document.getElementById('t4').textContent = ' ';
-    document.getElementById('t5').textContent = ' ';
-    document.getElementById('t6').textContent = ' ';
-    document.getElementById('t7').textContent = ' ';
-    document.getElementById('t8').textContent = ' ';
-    document.getElementById('t9').textContent = ' ';
-
     setHovers("hover")
-
-    t1S = t2S = t3S = t4S = t5S = t6S = t7S = t8S = t9S = false;
 
     document.getElementById('playerWon').textContent = " "
 };
@@ -44,59 +25,42 @@ document.getElementById('startGame').onclick = function () {
 
 //play field
 document.getElementById('t1').onclick = function () {
-    if (!t1S) {
-        play("t1");
-        t1S = true;
-    }
+    fieldClicked('t1')
 };
 document.getElementById('t2').onclick = function () {
-    if (!t2S) {
-        play("t2");
-        t2S = true;
-    }
+    fieldClicked('t2')
 };
 document.getElementById('t3').onclick = function () {
-    if (!t3S) {
-        play("t3");
-        t3S = true;
-    }
+    fieldClicked('t3')
 };
 document.getElementById('t4').onclick = function () {
-    if (!t4S) {
-        play("t4");
-        t4S = true;
-    }
+    fieldClicked('t4')
 };
 document.getElementById('t5').onclick = function () {
-    if (!t5S) {
-        play("t5");
-        t5S = true;
-    }
-};
+    fieldClicked('t5')
+}
 document.getElementById('t6').onclick = function () {
-    if (!t6S) {
-        play("t6");
-        t6S = true;
-    }
-};
+    fieldClicked('t6')
+}
 document.getElementById('t7').onclick = function () {
-    if (!t7S) {
-        play("t7");
-        t7S = true;
-    }
-};
+    fieldClicked('t7')
+}
 document.getElementById('t8').onclick = function () {
-    if (!t8S) {
-        play("t8");
-        t8S = true;
-    }
-};
+    fieldClicked('t8')
+}
 document.getElementById('t9').onclick = function () {
-    if (!t9S) {
-        play("t9");
-        t9S = true;
+    fieldClicked('t9')
+}
+
+function fieldClicked(t) {
+    if (!fieldSet[t]) {
+        playField[t] = currentPlayer
+        play()
+        if (multiplayer) sendState()
+        fieldSet[t] = true
     }
-};
+}
+
 //peerjs
 let peer
 let conn
@@ -109,8 +73,13 @@ function createPeerJS() {
     peer.on('open', function (id) {
         console.log('My peer ID is: ' + id);
         document.getElementById("peerID").innerText = "Your ID is: " + id
+
         //parent.navigator.clipboard.writeText(id);
     });
+
+    if (multiplayerPlayer === 0) multiplayerPlayer = 'X'
+    else multiplayerPlayer = 'O'
+    document.getElementById("youArePlayer").innerText = "You are Player: " + multiplayerPlayer
 }
 
 function createConnection(dest) {
@@ -151,62 +120,26 @@ document.getElementById("testSend").onclick = function () {
 };
 
 //let fieldID;
-
-function play(t) {
-    if (t) {
-        //fieldID = t
-
-        //if field is given:
-        //write to field object depending on player
-        if (currentPlayer === 1) {
-            playField[t] = "X"
-            document.getElementById(t).textContent = 'X';
-            document.getElementById(t).style.color = 'blue';
-        } else if (currentPlayer === 2) {
-            playField[t] = "O"
-            document.getElementById(t).textContent = 'O';
-            document.getElementById(t).style.color = 'red';
+function play() {
+    for (let i = 1; i < 10; i++) {
+        let c = "t" + i
+        if (playField[c] === 'X') {
+            document.getElementById(c).style.color = 'blue';
+            document.getElementById(c).textContent = playField[c];
+            document.getElementById(c).className = "noHover";
+        } else if (playField[c] === 'O') {
+            document.getElementById(c).style.color = 'red';
+            document.getElementById(c).textContent = playField[c];
+            document.getElementById(c).className = "noHover";
         }
     }
-    if (!t) {
-
-        for (let i = 1; i < 9; i++) {
-            let c = "t" + i
-            if (playField[c] === "X") {
-                document.getElementById(t).textContent = 'X';
-                document.getElementById(t).style.color = 'blue';
-            } else if (playField[c] === "O") {
-                document.getElementById(t).textContent = 'O';
-                document.getElementById(t).style.color = 'red';
-            }
-        }
-    }
-
-    //console.log("ID: " + fieldID);
-    //if (currentPlayer === 1) {
-    //    document.getElementById(fieldID).textContent = 'X';
-    //    document.getElementById(fieldID).style.color = 'blue';
-    //    if (items[x][y] === 0) {
-    //        items[x][y] = 1;
-    //    }
-//
-    //} else {
-    //    document.getElementById(fieldID).textContent = 'O';
-    //    document.getElementById(fieldID).style.color = 'red';
-    //    if (items[x][y] === 0) {
-    //        items[x][y] = 2;
-    //    }
-//
-    //}
-//
-    //change player
-    if (currentPlayer === 2) {
-        currentPlayer = 1;
-    } else currentPlayer = 2;
+    if (currentPlayer === 'O') {
+        currentPlayer = 'X';
+    } else currentPlayer = 'O';
 
     //update current player shown
     let cpl
-    if (currentPlayer === 1) cpl = 'Current Player: 1 (X)'
+    if (currentPlayer === 'X') cpl = 'Current Player: 1 (X)'
     else cpl = 'Current Player: 2 (O)';
     document.getElementById('playerOnTurn').textContent = cpl;
 
@@ -214,15 +147,10 @@ function play(t) {
         checkTie();
     }
 
-    document.getElementById(t).className = "noHover";
-    //send state for multiplayer
-    if (multiplayer) {
-        sendState();
-    }
 }
 
 function sendState() {
-    const gameState = {playField: playField, currentPlayer: currentPlayer};
+    const gameState = {playField: playField, player: 'O'};
 
     conn.send(gameState);
     //conn.send(items);
@@ -230,18 +158,28 @@ function sendState() {
 }
 
 function receivedState(data) {
-    //if (Array.isArray(data)) {
-    //    items = data;
-    //    console.log("isArray")
-    //    arrayToPlayField();
-    //}
-    //items = data.items;
-
     console.log("Rec items: ")
     //console.log(data.items);
-    currentPlayer = data.currentPlayer;
+    //currentPlayer = data.currentPlayer;
+    console.log(playField)
+
+    for (let i = 1; i < 10; i++) {
+        let c = "t" + i
+        playField[c] = data.playField[c];
+        if (data.playField[c] !== 'X' && data.playField[c] !== 'O') {
+            playField[c] = 0;
+        }
+    }
+    play();
+    /*
+    if (currentPlayer === 'X') currentPlayer = 'O'
+    else if (currentPlayer === 'O') currentPlayer = 'X'
+
+     */
 
 
+    //playField[data.field] = data.player
+    //play()
 }
 
 function checkWin(player) {
@@ -257,9 +195,13 @@ function checkWin(player) {
         (playField.t3 === player && playField.t5 === player && playField.t7 === player)) {
 
         document.getElementById('playerWon').textContent = "Player " + player + " won!"
-        if (player === 1) document.getElementById('playerWon').style.color = 'blue';
+        if (player === 'X') document.getElementById('playerWon').style.color = 'blue';
         else document.getElementById('playerWon').style.color = 'red';
-        t1S = t2S = t3S = t4S = t5S = t6S = t7S = t8S = t9S = true;
+
+        for (let i = 1; i < 10; i++) {
+            let c = "t" + i
+            fieldSet[c] = true
+        }
 
         setHovers("noHover")
         return true
@@ -269,16 +211,15 @@ function checkWin(player) {
 
 function checkTie() {
     if (
-        playField.t1 !== 0 && playField.t2 !== 0 &&
-        playField.t7 !== 0 && playField.t4 !== 0 &&
-        playField.t5 !== 0 && playField.t6 !== 0 &&
-        playField.t7 !== 0 && playField.t8 !== 0 &&
-        playField.t9 !== 0) {
+        playField.t1 !== '0' && playField.t2 !== '0' &&
+        playField.t3 !== '0' && playField.t4 !== '0' &&
+        playField.t5 !== '0' && playField.t6 !== '0' &&
+        playField.t7 !== '0' && playField.t8 !== '0' &&
+        playField.t9 !== '0') {
 
 
         document.getElementById('playerWon').textContent = "Tie";
         document.getElementById('playerWon').style.color = ' ';
-
 
     }
 }
@@ -289,14 +230,9 @@ function setHovers(cssClass) {
     noHover
     hover
      */
-    document.getElementById('t1').className = cssClass;
-    document.getElementById('t2').className = cssClass;
-    document.getElementById('t3').className = cssClass;
-    document.getElementById('t4').className = cssClass;
-    document.getElementById('t5').className = cssClass;
-    document.getElementById('t6').className = cssClass;
-    document.getElementById('t7').className = cssClass;
-    document.getElementById('t8').className = cssClass;
-    document.getElementById('t9').className = cssClass;
+    for (let i = 1; i < 10; i++) {
+        let c = "t" + i
+        document.getElementById(c).className = cssClass;
+    }
 }
 
